@@ -96,7 +96,7 @@ stores/
           NEXT_PUBLIC_API_URL: 'https://baseurl.co.kr/api/'
         },
       ```
-      ```
+      ```env
       # .env
       NEXT_PUBLIC_PUBLIC_URL=fe
       NEXT_PUBLIC_API_URL=https://baseurl.co.kr/api
