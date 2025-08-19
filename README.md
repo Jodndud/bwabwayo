@@ -1,14 +1,13 @@
-# bwabwayo(봐봐요)
 ## 📝 프로젝트 소개
-화상거래를 통한 중고거래 플랫폼 프론트서버
+화상거래를 통한 중고거래 플랫폼(봐봐요) 프론트서버
 
 ## 🛠 사용 기술
-- Next.js 14.4
-- typeScript
-- STOMP / WebSocket
-- OpenVidu
-- tailwind.css
-- Zustand
+![Next.js](https://img.shields.io/badge/Next.js-14-black?style=for-the-badge&logo=next.js)
+![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)
+![STOMP](https://img.shields.io/badge/STOMP-WebSocket-yellow?style=for-the-badge)
+![OpenVidu](https://img.shields.io/badge/OpenVidu-2.28.0-blue?style=for-the-badge)
+![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)
+![Zustand](https://img.shields.io/badge/Zustand-4.4.7-purple?style=for-the-badge)
 
 ## 📊 시스템 구조
 [시스템 구조도 이미지]
@@ -16,9 +15,11 @@
 ## 🔍 주요 기능
 1. 실시간 채팅 기능
   메세지 타입에 따라 다른 공지글을 보내줘야하기 때문에 WebSocket을 기반으로 STOMP 프로토콜 사용
-  ```[STOMP연결] - [STOMP Client연결] - [STOMP 구독] - [메시지 송/수신]```
+  ```
+  [STOMP연결] - [STOMP Client연결] - [STOMP 구독] - [메시지 송/수신]
+  ```
 
-2. WebRTC를 통한 화상공유
+3. WebRTC를 통한 화상공유
    OpenVidu 라이브러리를 이용해 실시간 공유 단순화
    ```
    // OpenVidu-React 예제의 toekn helpers 부분 수정 -> 동작 확인
@@ -41,7 +42,7 @@
     }
    ```
 
-3. ㄴ
+4. ㄴ
 
 ## 프로젝트 구조
 ### 라우트 구조 (App Router)
