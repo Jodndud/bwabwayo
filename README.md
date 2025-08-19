@@ -84,7 +84,7 @@ stores/
 
 ## 이슈
 1. 채팅방의 많은 기능으로 인해 실시간 메시지 송수신 오류
-해결방안: 많은 라우트 요청으로 인해 구독이 끊어져 구독시점을 생성
+- 해결방안: 많은 라우트 요청으로 인해 구독이 끊어져 구독시점을 생성
 ```typeScript
 // 5초마다 클라이언트 재연결
 const client = new StompJs.Client({
@@ -120,7 +120,7 @@ const attemptSend = async (retryCount = 0) => {
 ```
 
 2. 개발환경에서의 경로(이미지 등) 관리
-해결방안: 환경변수 설정(방법1: .env파일 생성(추천), 방법2: next.config.mjs 파일에서 간단히 생성)
+- 해결방안: 환경변수 설정(방법1: .env파일 생성(추천), 방법2: next.config.mjs 파일에서 간단히 생성)
 ```javaScript
 // next.config.mjs
 const nextConfig = {
