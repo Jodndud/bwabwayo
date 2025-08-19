@@ -84,32 +84,65 @@ stores/
 
 ## 이슈
 1. 채팅방의 많은 기능으로 인해 실시간 메시지 송수신 오류
-   - 해결방안
+해결방안: 많은 라우트 요청으로 인해 구독이 끊어져 구독시점을 생성
+```typeScript
+// 5초마다 클라이언트 재연결
+const client = new StompJs.Client({
+  webSocketFactory: () => socket,
+  connectHeaders: {
+    Authorization: `Bearer ${accessToken}`,
+  },
+  reconnectDelay: 5000,  // ← 자동 재연결 지연 시간 (5초)
+  heartbeatIncoming: 4000,
+  heartbeatOutgoing: 4000,
+});
 
-2. 개발환경에서의 이미지 주소 관리
-    - 해결방안 : 환경변수 설정(방법1: .env파일 생성(추천), 방법2: next.config.mjs 파일에서 간단히 생성)
-      ```javaScript
-      // next.config.mjs
-      const nextConfig = {
-        env: {
-          NEXT_PUBLIC_PUBLIC_URL: process.env.NODE_ENV === 'production' ? '/fe' : '',
-          NEXT_PUBLIC_API_URL: 'https://baseurl.co.kr/api/'
-        },
-      ```
-      ```env
-      # .env
-      NEXT_PUBLIC_PUBLIC_URL=fe
-      NEXT_PUBLIC_API_URL=https://baseurl.co.kr/api
-      ```
-      사용
-      ```typeScript
-      const baseUrl = process.env.NEXT_PUBLIC_PUBLIC_URL
+// stores/chatting.chatRoomStore.ts
+// 메시지 전송 시 재연결 시도 (3회)
+const attemptSend = async (retryCount = 0) => {
+  const currentState = get()
 
-      export default class Compoenent(){
-        return(
-          <div>
-            <img src=`${baseUrl}/images/sample.png` alt="sample" />
-          </div>
-        )
+  if (!currentState.stompClient || !currentState.isConnected) {
+    if (retryCount < 3) {
+      console.log(`🔄 STOMP 연결 시도 ${retryCount + 1}/3...`)
+      try {
+        currentState.connectStomp(roomId)
+        // 연결 대기
+        await new Promise(resolve => setTimeout(resolve, 2000))
+
+        // 재귀적으로 다시 시도
+        attemptSend(retryCount + 1)
+        return
       }
-      ```
+    }
+  }
+}
+```
+
+2. 개발환경에서의 경로(이미지 등) 관리
+해결방안: 환경변수 설정(방법1: .env파일 생성(추천), 방법2: next.config.mjs 파일에서 간단히 생성)
+```javaScript
+// next.config.mjs
+const nextConfig = {
+  env: {
+    NEXT_PUBLIC_PUBLIC_URL: process.env.NODE_ENV === 'production' ? '/fe' : '',
+    NEXT_PUBLIC_API_URL: 'https://baseurl.co.kr/api/'
+  },
+```
+```env
+# .env
+NEXT_PUBLIC_PUBLIC_URL=fe
+NEXT_PUBLIC_API_URL=https://baseurl.co.kr/api
+```
+사용
+```typeScript
+const baseUrl = process.env.NEXT_PUBLIC_PUBLIC_URL
+
+export default class Compoenent(){
+  return(
+    <div>
+      <img src=`${baseUrl}/images/sample.png` alt="sample" />
+    </div>
+  )
+}
+```
