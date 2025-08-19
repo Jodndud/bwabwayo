@@ -21,7 +21,7 @@
 
 3. WebRTC를 통한 화상공유
  OpenVidu 라이브러리를 이용해 실시간 공유 단순화
- ```
+ ```typeScript
  // OpenVidu-React 예제의 toekn helpers 부분 수정 -> 동작 확인
  // -------- token helpers --------
   async function getToken() {
