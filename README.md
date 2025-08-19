@@ -54,66 +54,27 @@ app/
 ├── signup/ (회원가입)
 ├── logincallback/ (로그인 콜백)
 ├── search/ (검색)
-├── product/
-│ ├── new/ (상품 등록)
-│ └── [id]/
-│ ├── page.tsx (상품 상세)
-│ └── edit/ (상품 수정)
-├── shop/
-│ └── [id]/ (상점 페이지)
-├── chat/
-│ ├── page.tsx (채팅 목록)
-│ ├── [roomId]/ (채팅방)
-│ └── payment/ (채팅 결제)
-├── mypage/
-│ ├── page.tsx (마이페이지)
-│ ├── address/ (주소 관리)
-│ ├── purchases/ (구매 내역)
-│ ├── sales/ (판매 내역)
-│ ├── schedule/ (일정 관리)
-│ ├── settings/ (설정)
-│ ├── wishlist/ (찜 목록)
-│ └── withdrawal/ (회원탈퇴)
+├── product/ (상품 등록 / 수정 / 상세)
+├── shop/ (상점 페이지)
+├── chat/ (채팅 목록 / 채팅방 / 경제 성공)
+├── mypage/ (마이페이지)
 ├── cs-center/ (고객센터)
-├── admin/
-│ ├── page.tsx (관리자 메인)
-│ ├── inquiries/ (문의 관리)
-│ └── reports/ (신고 관리)
-├── api/
-│ └── payment/
-│ └── confirm/ (결제 확인)
-└── test/
+├── admin/ (관리자 페이지)
+└── test/ (시스템 메시지 테스트)
 ```
 
 ### Store 구조 (Zustand)
 ```
 stores/
-├── auth/
-│   └── authStore.ts (로그인/로그아웃, 사용자 인증 상태)
-├── chatting/
-│   ├── chatRoomStore.ts (채팅방 관리, 메시지 처리)
-│   ├── reservationStore.ts (예약 관리)
-│   └── sendTypeMessage.ts (메시지 전송 타입 관리)
-├── product/
-│   ├── productStore.ts (상품 CRUD, 상품 목록 관리)
-│   └── likeProductStore.ts (찜 기능, 좋아요 상태 관리)
-├── mypage/
-│   ├── myActivityStore.ts (사용자 활동 내역 - 구매/판매/리뷰)
-│   ├── mySettingStore.ts (사용자 설정 관리)
-│   ├── myAddressStore.ts (주소 관리)
-│   └── myStore.ts (내 상점 관리)
-├── admin/
-│   ├── reportStore.ts (신고 관리)
-│   └── inquiriesStore.ts (문의 관리)
-├── cs-store/
-│   ├── reportStore.ts (신고 기능)
-│   └── inquiryStore.ts (문의 기능)
-├── ai/
-│   └── aiDescriptionStore.ts (AI 상품 설명 생성)
-├── shop/
-│   └── shopStore.ts (상점 정보 관리)
-├── user/
-│   └── userStore.ts (사용자 정보 관리)
+├── auth/ (로그인/로그아웃, 사용자 인증 상태)
+├── chatting/ (채팅방 관리, 메시지 처리, 화상예약, 타입별 메시지)
+├── product/ (상품 CRUD, 상품 목록 관리 / 좋아요 상태 관리)
+├── mypage/ (사용자 활동 내역)
+├── admin/ (관리자 조회, 답변)
+├── cs-store/ (신고, 문의 CRUD)
+├── ai/ (AI 상품 설명 생성)
+├── shop/ (상점 정보 관리)
+├── user/ (사용자 정보 관리)
 ├── modalStore.ts (모달 상태 관리)
 ├── loadingStore.ts (로딩 상태 관리)
 ├── notificationStore.ts (알림 관리)
