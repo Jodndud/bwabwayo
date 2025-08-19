@@ -81,3 +81,30 @@ stores/
 ├── imageUploadStore.ts (이미지 업로드 관리)
 └── categoryStore.ts (카테고리 관리)
 ```
+
+## 이슈
+1. 채팅방의 많은 기능으로 인해 실시간 메시지 송수신 오류
+   - 해결방안
+
+2. 개발환경에서의 이미지 주소 관리
+    - 해결방안 : 환경변수 설정(방법1: env파일 생성, 방법2: next.config.mjs 파일에서 간단히 생성)
+      ```javaScript
+      // next.config.mjs
+      const nextConfig = {
+        env: {
+          NEXT_PUBLIC_PUBLIC_URL: process.env.NODE_ENV === 'production' ? '/fe' : '',
+          NEXT_PUBLIC_API_URL: 'https://baseurl.co.kr/api/'
+        },
+      ```
+      사용
+      ```typeScript
+      const baseUrl = process.env.NEXT_PUBLIC_PUBLIC_URL
+
+      export default Compoenent(){
+        return(
+          <div>
+            <img src=`${baseUrl}/images/sample.png` alt="sample" />
+          </div>
+        )
+      }
+      ```
