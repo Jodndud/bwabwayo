@@ -87,7 +87,7 @@ stores/
    - 해결방안
 
 2. 개발환경에서의 이미지 주소 관리
-    - 해결방안 : 환경변수 설정(방법1: env파일 생성, 방법2: next.config.mjs 파일에서 간단히 생성)
+    - 해결방안 : 환경변수 설정(방법1: .env파일 생성(추천), 방법2: next.config.mjs 파일에서 간단히 생성)
       ```javaScript
       // next.config.mjs
       const nextConfig = {
@@ -100,7 +100,7 @@ stores/
       ```typeScript
       const baseUrl = process.env.NEXT_PUBLIC_PUBLIC_URL
 
-      export default Compoenent(){
+      export default class Compoenent(){
         return(
           <div>
             <img src=`${baseUrl}/images/sample.png` alt="sample" />
