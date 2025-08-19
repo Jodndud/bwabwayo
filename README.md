@@ -20,27 +20,27 @@
   ```
 
 3. WebRTC를 통한 화상공유
-   OpenVidu 라이브러리를 이용해 실시간 공유 단순화
-   ```
-   // OpenVidu-React 예제의 toekn helpers 부분 수정 -> 동작 확인
-   // -------- token helpers --------
-    async function getToken() {
-      const sessionId = await createSession(state.mySessionId);
-      return await createToken(sessionId);
+ OpenVidu 라이브러리를 이용해 실시간 공유 단순화
+ ```
+ // OpenVidu-React 예제의 toekn helpers 부분 수정 -> 동작 확인
+ // -------- token helpers --------
+  async function getToken() {
+    const sessionId = await createSession(state.mySessionId);
+    return await createToken(sessionId);
+  }
+  async function createSession(sessionId: string) {
+    if (videoSessionId) {
+      console.log('기존 세션ID 사용:', videoSessionId);
+      return videoSessionId;
     }
-    async function createSession(sessionId: string) {
-      if (videoSessionId) {
-        console.log('기존 세션ID 사용:', videoSessionId);
-        return videoSessionId;
-      }
-      const res = await axios.post(`${baseUrl}/api/sessions`, { videoRoomId: sessionId }, { headers: { 'Content-Type': 'application/json' } });
-      return res.data;
-    }
-    async function createToken(sessionId: string) {
-      const res = await axios.post(`${baseUrl}/api/sessions/${sessionId}/token`, {}, { headers: { 'Content-Type': 'application/json' } });
-      return res.data;
-    }
-   ```
+    const res = await axios.post(`${baseUrl}/api/sessions`, { videoRoomId: sessionId }, { headers: { 'Content-Type': 'application/json' } });
+    return res.data;
+  }
+  async function createToken(sessionId: string) {
+    const res = await axios.post(`${baseUrl}/api/sessions/${sessionId}/token`, {}, { headers: { 'Content-Type': 'application/json' } });
+    return res.data;
+  }
+ ```
 
 4. ㄴ
 
