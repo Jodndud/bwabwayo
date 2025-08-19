@@ -47,6 +47,7 @@
 ## 프로젝트 구조
 <details>
   <summary>📁 라우트 구조 (App Router)</summary>
+  ```
   app/
   ├── page.tsx (홈페이지)
   ├── layout.tsx
@@ -83,6 +84,7 @@
   │ └── payment/
   │ └── confirm/ (결제 확인)
   └── test/
+  ```
 </details>
 
 ### Store 구조 (Zustand)
