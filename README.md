@@ -45,8 +45,6 @@
 4. ㄴ
 
 ## 프로젝트 구조
-### 
-```
 <details>
   <summary>📁 라우트 구조 (App Router)</summary>
   app/
@@ -86,7 +84,6 @@
   │ └── confirm/ (결제 확인)
   └── test/
 </details>
-```
 
 ### Store 구조 (Zustand)
 ```
