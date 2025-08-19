@@ -84,7 +84,7 @@ stores/
 
 ## 이슈
 1. 채팅방의 많은 기능으로 인해 실시간 메시지 송수신 오류
-- 해결방안: 많은 라우트 요청으로 인해 구독이 끊어져 구독시점을 생성
+- 해결방안: 많은 라우트 요청으로 인해 구독이 끊어져 재연결 요청 및 구독 코드 추가
 ```typeScript
 // 5초마다 클라이언트 재연결
 const client = new StompJs.Client({
@@ -94,29 +94,18 @@ const client = new StompJs.Client({
   },
   reconnectDelay: 5000,  // ← 자동 재연결 지연 시간 (5초)
   heartbeatIncoming: 4000,
-  heartbeatOutgoing: 4000,
-});
-
-// stores/chatting.chatRoomStore.ts
-// 메시지 전송 시 재연결 시도 (3회)
-const attemptSend = async (retryCount = 0) => {
-  const currentState = get()
-
-  if (!currentState.stompClient || !currentState.isConnected) {
-    if (retryCount < 3) {
-      console.log(`🔄 STOMP 연결 시도 ${retryCount + 1}/3...`)
-      try {
-        currentState.connectStomp(roomId)
-        // 연결 대기
-        await new Promise(resolve => setTimeout(resolve, 2000))
-
-        // 재귀적으로 다시 시도
-        attemptSend(retryCount + 1)
-        return
-      }
+  hear독
+const subs = get()._roomSubs;
+Object.keys(subs).forEach((rid) => {
+  const ridNum = Number(rid);
+  if (!Number.isNaN(ridNum)) {
+    try {
+      get().subscribeToRoom(ridNum);
+    } catch (e) {
+      console.error('재구독 실패:', ridNum, e);
     }
   }
-}
+})
 ```
 
 2. 개발환경에서의 경로(이미지 등) 관리
