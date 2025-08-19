@@ -1,96 +1,123 @@
-# Bwabwayo Frontend
+# bwabwayo(봐봐요)
+## 📝 프로젝트 소개
+화상거래를 통한 중고거래 플랫폼 프론트서버
 
-## 채팅 모달 시스템 이해
+## 🛠 사용 기술
+- Next.js 14.4
+- typeScript
+- STOMP / WebSocket
+- OpenVidu
+- tailwind.css
+- Zustand
 
-### 전체 플로우
+## 📊 시스템 구조
+[시스템 구조도 이미지]
 
-채팅 모달 시스템은 거래 시작부터 완료까지의 전체 과정을 단계별로 관리하는 시스템입니다.
-모든 모달은 components/chat/modals/AllModals.tsx에 있습니다.
+## 🔍 주요 기능
+1. 실시간 채팅 기능
+  메세지 타입에 따라 다른 공지글을 보내줘야하기 때문에 WebSocket을 기반으로 STOMP 프로토콜 사용
+  ```[STOMP연결] - [STOMP Client연결] - [STOMP 구독] - [메시지 송/수신]```
 
-### 1. 거래 시작 (StartTradeModal)
-- **트리거**: ChatModal에서 "거래시작" 버튼 클릭
-- **API 요청**: 백엔드에 거래 시작 요청
-- **백엔드 응답**: 채팅창에 `START_TRADE` 타입 메시지 전달
-- **모달**: StartTradeModal 모달 표시
-- **기능**: 최종 거래 금액 입력
+2. WebRTC를 통한 화상공유
+   OpenVidu 라이브러리를 이용해 실시간 공유 단순화
+   ```
+   // OpenVidu-React 예제의 toekn helpers 부분 수정 -> 동작 확인
+   // -------- token helpers --------
+    async function getToken() {
+      const sessionId = await createSession(state.mySessionId);
+      return await createToken(sessionId);
+    }
+    async function createSession(sessionId: string) {
+      if (videoSessionId) {
+        console.log('기존 세션ID 사용:', videoSessionId);
+        return videoSessionId;
+      }
+      const res = await axios.post(`${baseUrl}/api/sessions`, { videoRoomId: sessionId }, { headers: { 'Content-Type': 'application/json' } });
+      return res.data;
+    }
+    async function createToken(sessionId: string) {
+      const res = await axios.post(`${baseUrl}/api/sessions/${sessionId}/token`, {}, { headers: { 'Content-Type': 'application/json' } });
+      return res.data;
+    }
+   ```
 
-### 2. 입금 요청 (RequestDepositModal)
-- **트리거**: StartTradeModal에서 금액 입력 후 확인
-- **API 요청**: `price` 파라미터와 함께 백엔드에 요청
-- **백엔드 응답**: 채팅창에 `REQUEST_DEPOSIT` 타입 메시지 전달
-- **모달**: RequestDepositModal 모달 표시
-- **기능**: 입금 확인 및 결제 진행
+3. ㄴ
 
-### 3. 결제 모달 (PaymentConnect)
-- **트리거**: RequestDepositModal에서 결제 방법 선택
-- **결제 처리**: PaymentSuccess 페이지를 통한 결제 성공/실패 처리
-- **백엔드 응답**: 결제 완료 후 `INPUT_DELIVERY_ADDRESS` 타입 메시지 전달
-- **모달**: InputDeliveryAddressModal 모달 표시
-- **기능**: 배송지 주소 입력
-
-### 4. 배송지 입력 (InputDeliveryAddressModal)
-- **트리거**: 결제 완료 후 자동
-- **기능**: 구매자가 배송지 주소 입력
-- **완료 시**: `INPUT_TRACKING_NUMBER` 타입 메시지 전달
-
-### 5. 송장번호 입력 (InputTrackingAddressModal)
-- **트리거**: 배송지 입력 완료 후
-- **모달**: InputTrackingAddressModal 모달 표시
-- **기능**: 택배사와 송장번호 입력
-- **API 요청**: 택배 정보를 백엔드에 전송
-- **백엔드 응답**: 
-  - `START_DELIVERY` 타입 메시지 → StartDeliveryModal 모달 표시
-  - 1초 후 `CONFIRM_PURCHASE` 타입 메시지 → ConfirmPurchaseModal 모달 표시
-
-### 6. 거래 완료 확인 (ConfirmPurchaseModal)
-- **트리거**: 송장번호 입력 완료 후
-- **모달**: ConfirmPurchaseModal 모달 표시
-- **기능**: 거래 완료 확인 및 리뷰 작성 링크 제공
-
-### 7. 리뷰 작성 (ReviewModal) - 구현 예정
-- **트리거**: ConfirmPurchaseModal에서 리뷰 작성 링크 클릭
-- **모달**: ReviewModal 모달 표시
-- **기능**: 구매 후기 및 평점 작성
-
-## 메시지 타입 정의
-
-```typescript
-enum MessageType {
-  START_TRADE = 'START_TRADE',
-  REQUEST_DEPOSIT = 'REQUEST_DEPOSIT',
-  INPUT_DELIVERY_ADDRESS = 'INPUT_DELIVERY_ADDRESS',
-  INPUT_TRACKING_NUMBER = 'INPUT_TRACKING_NUMBER',
-  START_DELIVERY = 'START_DELIVERY',
-  CONFIRM_PURCHASE = 'CONFIRM_PURCHASE'
-}
+## 프로젝트 구조
+### 라우트 구조 (App Router)
+```
+app/
+├── page.tsx (홈페이지)
+├── layout.tsx
+├── globals.css
+├── signup/ (회원가입)
+├── logincallback/ (로그인 콜백)
+├── search/ (검색)
+├── product/
+│ ├── new/ (상품 등록)
+│ └── [id]/
+│ ├── page.tsx (상품 상세)
+│ └── edit/ (상품 수정)
+├── shop/
+│ └── [id]/ (상점 페이지)
+├── chat/
+│ ├── page.tsx (채팅 목록)
+│ ├── [roomId]/ (채팅방)
+│ └── payment/ (채팅 결제)
+├── mypage/
+│ ├── page.tsx (마이페이지)
+│ ├── address/ (주소 관리)
+│ ├── purchases/ (구매 내역)
+│ ├── sales/ (판매 내역)
+│ ├── schedule/ (일정 관리)
+│ ├── settings/ (설정)
+│ ├── wishlist/ (찜 목록)
+│ └── withdrawal/ (회원탈퇴)
+├── cs-center/ (고객센터)
+├── admin/
+│ ├── page.tsx (관리자 메인)
+│ ├── inquiries/ (문의 관리)
+│ └── reports/ (신고 관리)
+├── api/
+│ └── payment/
+│ └── confirm/ (결제 확인)
+└── test/
 ```
 
-## 구현 상태
-
-- [x] StartTradeModal
-- [x] RequestDepositModal  
-- [x] PaymentConnect (결제 시스템)
-- [x] InputDeliveryAddressModal
-- [x] InputTrackingAddressModal
-- [x] StartDeliveryModal
-- [x] ConfirmPurchaseModal
-- [ ] ReviewModal (구현 예정)
-
-## 파일 구조
-
+### Store 구조 (Zustand)
 ```
-components/chat/modals/
-├── AllModals.tsx (모든 모달 컴포넌트 관리)
-├── DeliveryForm.tsx
-├── DeliverySelectForm.tsx
-├── FinalPriceForm.tsx
-├── InputPriceModal.tsx
-├── OverlayPortal.tsx
-├── PurchaseConfirm.tsx
-├── ReportModal.tsx
-├── ReservationModal.tsx
-├── TrackingForm.tsx
-└── tossPay/
-    ├── PaymentCheckout.tsx
-    └── PaymentSuccess.tsx
+stores/
+├── auth/
+│   └── authStore.ts (로그인/로그아웃, 사용자 인증 상태)
+├── chatting/
+│   ├── chatRoomStore.ts (채팅방 관리, 메시지 처리)
+│   ├── reservationStore.ts (예약 관리)
+│   └── sendTypeMessage.ts (메시지 전송 타입 관리)
+├── product/
+│   ├── productStore.ts (상품 CRUD, 상품 목록 관리)
+│   └── likeProductStore.ts (찜 기능, 좋아요 상태 관리)
+├── mypage/
+│   ├── myActivityStore.ts (사용자 활동 내역 - 구매/판매/리뷰)
+│   ├── mySettingStore.ts (사용자 설정 관리)
+│   ├── myAddressStore.ts (주소 관리)
+│   └── myStore.ts (내 상점 관리)
+├── admin/
+│   ├── reportStore.ts (신고 관리)
+│   └── inquiriesStore.ts (문의 관리)
+├── cs-store/
+│   ├── reportStore.ts (신고 기능)
+│   └── inquiryStore.ts (문의 기능)
+├── ai/
+│   └── aiDescriptionStore.ts (AI 상품 설명 생성)
+├── shop/
+│   └── shopStore.ts (상점 정보 관리)
+├── user/
+│   └── userStore.ts (사용자 정보 관리)
+├── modalStore.ts (모달 상태 관리)
+├── loadingStore.ts (로딩 상태 관리)
+├── notificationStore.ts (알림 관리)
+├── signUpStore.ts (회원가입 프로세스)
+├── chatBotStore.ts (챗봇 상태 관리)
+├── imageUploadStore.ts (이미지 업로드 관리)
+└── categoryStore.ts (카테고리 관리)
 ```
