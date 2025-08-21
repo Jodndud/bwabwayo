@@ -1,6 +1,9 @@
-## 📝 프로젝트 소개
-화상거래를 통한 중고거래 플랫폼(봐봐요) 프론트서버
-
+## 📝 프로젝트 개요
+비대면 화상 중고거래 플랫폼 **봐봐요**는 실시간 화상 채팅을 통한 거래 검증으로 **택배거래 사기 문제를 예방**하고, 안전하고 신뢰성 있는 중고거래 환경을 제공합니다.
+- **개발 기간** : 2025.07.07 ~ 2025.08.18 (7주)
+- **플랫폼** : Web
+- **개발 인원** : 6명 (프론트엔드 2명, 백엔드 4명)
+  
 ## 🛠 사용 기술
 ![Next.js](https://img.shields.io/badge/Next.js-14-black?style=for-the-badge&logo=next.js)
 ![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)
